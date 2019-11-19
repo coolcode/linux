@@ -1,0 +1,18 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "hello"
+    }
+  ],
+  "ping": {
+    "message": "success",
+    "status": "1",    
+    "test_result": "success"
+  },
+  "ping_fail": {
+    "message": "error",
+    "status": "0",    
+    "test_result": "fail"
+  }
+}
