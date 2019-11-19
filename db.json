@@ -14,5 +14,10 @@
     "message": "error",
     "status": "0",    
     "test_result": "fail"
-  }
+  },
+  "ping2": {
+    "message": "awesome!!!!!!!!!!!!!!",
+    "status": "1",    
+    "test_result": "success"
+  },
 }
