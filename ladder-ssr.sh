@@ -308,46 +308,9 @@ Set_config_protocol_param(){
 }
 Set_config_speed_limit_per_con(){
 	ssr_speed_limit_per_con=0
-	# while true
-	# do
-	# echo -e "请输入要设置的每个端口 单线程 限速上限(单位：KB/S)"
-	# echo -e "${Tip} 单线程限速：每个端口 单线程的限速上限，多线程即无效。"
-	# read -e -p "(默认: 无限):" ssr_speed_limit_per_con
-	# [[ -z "$ssr_speed_limit_per_con" ]] && ssr_speed_limit_per_con=0 && echo && break
-	# echo $((${ssr_speed_limit_per_con}+0)) &>/dev/null
-	# if [[ $? == 0 ]]; then
-	# 	if [[ ${ssr_speed_limit_per_con} -ge 1 ]] && [[ ${ssr_speed_limit_per_con} -le 131072 ]]; then
-	# 		echo && echo ${Separator_1} && echo -e "	单线程限速 : ${Green_font_prefix}${ssr_speed_limit_per_con} KB/S${Font_color_suffix}" && echo ${Separator_1} && echo
-	# 		break
-	# 	else
-	# 		echo -e "${Error} 请输入正确的数字(1-131072)"
-	# 	fi
-	# else
-	# 	echo -e "${Error} 请输入正确的数字(1-131072)"
-	# fi
-	# done
 }
 Set_config_speed_limit_per_user(){
 	ssr_speed_limit_per_user=0
-	# while true
-	# do
-	# echo
-	# echo -e "请输入要设置的每个端口 总速度 限速上限(单位：KB/S)"
-	# echo -e "${Tip} 端口总限速：每个端口 总速度 限速上限，单个端口整体限速。"
-	# read -e -p "(默认: 无限):" ssr_speed_limit_per_user
-	# [[ -z "$ssr_speed_limit_per_user" ]] && ssr_speed_limit_per_user=0 && echo && break
-	# echo $((${ssr_speed_limit_per_user}+0)) &>/dev/null
-	# if [[ $? == 0 ]]; then
-	# 	if [[ ${ssr_speed_limit_per_user} -ge 1 ]] && [[ ${ssr_speed_limit_per_user} -le 131072 ]]; then
-	# 		echo && echo ${Separator_1} && echo -e "	端口总限速 : ${Green_font_prefix}${ssr_speed_limit_per_user} KB/S${Font_color_suffix}" && echo ${Separator_1} && echo
-	# 		break
-	# 	else
-	# 		echo -e "${Error} 请输入正确的数字(1-131072)"
-	# 	fi
-	# else
-	# 	echo -e "${Error} 请输入正确的数字(1-131072)"
-	# fi
-	# done
 }
 Set_config_all(){
 	Set_config_port
@@ -577,51 +540,6 @@ Uninstall_SSR(){
 		echo && echo " 卸载已取消..." && echo
 	fi
 }
-Check_Libsodium_ver(){
-	echo -e "${Info} 开始获取 libsodium 最新版本..."
-	Libsodiumr_ver=$(wget -qO- "https://github.com/jedisct1/libsodium/tags"|grep "/jedisct1/libsodium/releases/tag/"|head -1|sed -r 's/.*tag\/(.+)\">.*/\1/')
-	[[ -z ${Libsodiumr_ver} ]] && Libsodiumr_ver=${Libsodiumr_ver_backup}
-	echo -e "${Info} libsodium 最新版本为 ${Green_font_prefix}${Libsodiumr_ver}${Font_color_suffix} !"
-}
-Install_Libsodium(){
-	if [[ -e ${Libsodiumr_file} ]]; then
-		echo -e "${Error} libsodium 已安装 , 是否覆盖安装(更新)？[y/N]"
-		read -e -p "(默认: n):" yn
-		[[ -z ${yn} ]] && yn="n"
-		if [[ ${yn} == [Nn] ]]; then
-			echo "已取消..." && exit 1
-		fi
-	else
-		echo -e "${Info} libsodium 未安装，开始安装..."
-	fi
-	Check_Libsodium_ver
-	if [[ ${release} == "centos" ]]; then
-		yum update
-		echo -e "${Info} 安装依赖..."
-		yum -y groupinstall "Development Tools"
-		echo -e "${Info} 下载..."
-		wget  --no-check-certificate -N "https://github.com/jedisct1/libsodium/releases/download/${Libsodiumr_ver}/libsodium-${Libsodiumr_ver}.tar.gz"
-		echo -e "${Info} 解压..."
-		tar -xzf libsodium-${Libsodiumr_ver}.tar.gz && cd libsodium-${Libsodiumr_ver}
-		echo -e "${Info} 编译安装..."
-		./configure --disable-maintainer-mode && make -j2 && make install
-		echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
-	else
-		apt-get update
-		echo -e "${Info} 安装依赖..."
-		apt-get install -y build-essential
-		echo -e "${Info} 下载..."
-		wget  --no-check-certificate -N "https://github.com/jedisct1/libsodium/releases/download/${Libsodiumr_ver}/libsodium-${Libsodiumr_ver}.tar.gz"
-		echo -e "${Info} 解压..."
-		tar -xzf libsodium-${Libsodiumr_ver}.tar.gz && cd libsodium-${Libsodiumr_ver}
-		echo -e "${Info} 编译安装..."
-		./configure --disable-maintainer-mode && make -j2 && make install
-	fi
-	ldconfig
-	cd .. && rm -rf libsodium-${Libsodiumr_ver}.tar.gz && rm -rf libsodium-${Libsodiumr_ver}
-	[[ ! -e ${Libsodiumr_file} ]] && echo -e "${Error} libsodium 安装失败 !" && exit 1
-	echo && echo -e "${Info} libsodium 安装成功 !" && echo
-}
 # 显示 连接信息
 debian_View_user_connection_info(){
 	format_1=$1
@@ -830,18 +748,6 @@ Del_multi_port_user(){
 	else
 		echo "${Error} 请输入正确的端口 !" && exit 1
 	fi
-}
-# 手动修改 用户配置
-Manually_Modify_Config(){
-	SSR_installation_status
-	port=`${jq_file} '.server_port' ${config_user_file}`
-	vi ${config_user_file}
-	if [[ -z "${now_mode}" ]]; then
-		ssr_port=`${jq_file} '.server_port' ${config_user_file}`
-		Del_iptables
-		Add_iptables
-	fi
-	Restart_SSR
 }
 # 切换端口模式
 Port_mode_switching(){
