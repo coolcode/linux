@@ -1185,20 +1185,20 @@ check_sys
 echo -e "  ShadowsocksR 一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- Toyo | doub.io/ss-jc42 ----
 
-  ${Green_font_prefix}1.${Font_color_suffix} Install ShadowsocksR
-  ${Green_font_prefix}2.${Font_color_suffix} Remove ShadowsocksR
+	${Green_font_prefix}1.${Font_color_suffix} Install ShadowsocksR
+	${Green_font_prefix}2.${Font_color_suffix} Remove ShadowsocksR
 ————————————
-  ${Green_font_prefix}3.${Font_color_suffix} User
-  ${Green_font_prefix}4.${Font_color_suffix} Connection Info
+	${Green_font_prefix}3.${Font_color_suffix} User
+	${Green_font_prefix}4.${Font_color_suffix} Connection Info
 ————————————
- ${Green_font_prefix}5.${Font_color_suffix} Start ShadowsocksR
- ${Green_font_prefix}6.${Font_color_suffix} Stop ShadowsocksR
- ${Green_font_prefix}7.${Font_color_suffix} Restart ShadowsocksR
- ${Green_font_prefix}8.${Font_color_suffix} View Logs
- ${Green_font_prefix}9.${Font_color_suffix} Upgrade
+	${Green_font_prefix}5.${Font_color_suffix} Start ShadowsocksR
+	${Green_font_prefix}6.${Font_color_suffix} Stop ShadowsocksR
+	${Green_font_prefix}7.${Font_color_suffix} Restart ShadowsocksR
+	${Green_font_prefix}8.${Font_color_suffix} View Logs
+	${Green_font_prefix}9.${Font_color_suffix} Upgrade
  "
 menu_status
-echo && read -e -p "请输入数字 [1-15]：" num
+echo && read -e -p "请输入数字 [1-9]：" num
 case "$num" in
 	1)
 	Install_SSR
